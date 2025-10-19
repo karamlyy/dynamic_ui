@@ -1,6 +1,4 @@
-import 'dart:io' show Platform;
 import 'package:dynamic_ui/cubit/dynamic_state.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'repositories/dynamic_repository.dart';
@@ -11,30 +9,13 @@ void main() {
   runApp(const DynamicApp());
 }
 
-String _getBaseUrl({String? overrideForDevice}) {
-  if (overrideForDevice != null && overrideForDevice.isNotEmpty) {
-    return overrideForDevice;
-  }
-
-  if (kIsWeb) {
-    return 'http://localhost:8080';
-  }
-
-  if (Platform.isAndroid) {
-    return 'http://10.0.2.2:8080';
-  } else if (Platform.isIOS) {
-    return 'http://localhost:8080';
-  } else {
-    return 'http://localhost:8080';
-  }
-}
 
 class DynamicApp extends StatelessWidget {
-  const DynamicApp({Key? key}) : super(key: key);
+  const DynamicApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final baseUrl = _getBaseUrl();
+    final baseUrl = 'http://10.0.2.2:8080';
     return MaterialApp(
       title: 'Dinamik App (Cubit + HTTP)',
       theme: ThemeData(primarySwatch: Colors.blue),
@@ -72,6 +53,8 @@ class HomePage extends StatelessWidget {
                 ElevatedButton(onPressed: () => _loadUser(context, 1), child: const Text('Load user 1')),
                 ElevatedButton(onPressed: () => _loadUser(context, 2), child: const Text('Load user 2')),
                 ElevatedButton(onPressed: () => _loadUser(context, 3), child: const Text('Load user 3')),
+                ElevatedButton(onPressed: () => _loadUser(context, 4), child: const Text('Load user 4')),
+
               ],
             ),
             const SizedBox(height: 12),
