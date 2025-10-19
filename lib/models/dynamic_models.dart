@@ -6,7 +6,7 @@ class FieldSchema {
   final String? relationEntity;
   final String? itemType;
   final String? widgetHint;
-  final bool? required;
+  final bool required;
   final Map<String, dynamic> extras;
 
   FieldSchema({
@@ -17,26 +17,29 @@ class FieldSchema {
     this.relationEntity,
     this.itemType,
     this.widgetHint,
-    this.required,
+    this.required = false,
     this.extras = const {},
   });
 
   factory FieldSchema.fromJson(Map<String, dynamic> json) {
     final map = Map<String, dynamic>.from(json);
-    final knownKeys = {'key','label','type','options','relationEntity','itemType','widgetHint','required'};
+    final knownKeys = {
+      'key', 'label', 'type', 'options', 'relationEntity', 'itemType', 'widgetHint', 'required'
+    };
     final extras = <String, dynamic>{};
     for (final k in map.keys) {
       if (!knownKeys.contains(k)) extras[k] = map[k];
     }
+
     return FieldSchema(
-      key: map['key'] as String,
-      label: map['label'] as String? ?? map['key'] as String,
-      type: map['type'] as String? ?? 'string',
+      key: map['key']?.toString() ?? '',
+      label: map['label']?.toString() ?? map['key']?.toString() ?? '',
+      type: map['type']?.toString() ?? 'string',
       options: (map['options'] as List<dynamic>?)?.toList(),
-      relationEntity: map['relationEntity'] as String?,
-      itemType: map['itemType'] as String?,
-      widgetHint: map['widgetHint'] as String?,
-      required: map['required'] as bool?,
+      relationEntity: map['relationEntity']?.toString(),
+      itemType: map['itemType']?.toString(),
+      widgetHint: map['widgetHint']?.toString(),
+      required: map['required'] as bool? ?? false,
       extras: extras,
     );
   }
@@ -58,11 +61,16 @@ class DynamicSection {
   factory DynamicSection.fromJson(Map<String, dynamic> json) {
     final schemaJson = (json['schema'] as List<dynamic>?) ?? [];
     final itemsJson = (json['items'] as List<dynamic>?) ?? [];
+
     return DynamicSection(
-      id: json['id'].toString(),
-      title: json['title'] as String? ?? json['id'].toString(),
-      schema: schemaJson.map((s) => FieldSchema.fromJson(Map<String, dynamic>.from(s))).toList(),
-      items: itemsJson.map((i) => Map<String, dynamic>.from(i)).toList(),
+      id: json['id']?.toString() ?? 'unknown',
+      title: json['title']?.toString() ?? json['id']?.toString() ?? 'unknown',
+      schema: schemaJson
+          .map((s) => FieldSchema.fromJson(Map<String, dynamic>.from(s)))
+          .toList(),
+      items: itemsJson
+          .map((i) => Map<String, dynamic>.from(i))
+          .toList(),
     );
   }
 }

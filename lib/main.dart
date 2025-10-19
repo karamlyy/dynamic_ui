@@ -54,6 +54,9 @@ class HomePage extends StatelessWidget {
                 ElevatedButton(onPressed: () => _loadUser(context, 2), child: const Text('Load user 2')),
                 ElevatedButton(onPressed: () => _loadUser(context, 3), child: const Text('Load user 3')),
                 ElevatedButton(onPressed: () => _loadUser(context, 4), child: const Text('Load user 4')),
+                ElevatedButton(onPressed: () => _loadUser(context, 5), child: const Text('Load user 5')),
+                ElevatedButton(onPressed: () => _loadUser(context, 6), child: const Text('Load user 6')),
+                ElevatedButton(onPressed: () => _loadUser(context, 7), child: const Text('Load user 7')),
 
               ],
             ),
