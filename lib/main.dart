@@ -2,6 +2,7 @@ import 'package:dynamic_ui/cubit/dynamic_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'repositories/dynamic_repository.dart';
+import 'services/api_service.dart';
 import 'cubit/dynamic_cubit.dart';
 import 'ui/section_view.dart';
 
@@ -16,11 +17,12 @@ class DynamicApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final baseUrl = 'http://10.0.2.2:8080';
+    final api = ApiService(baseUrl: baseUrl);
     return MaterialApp(
       title: 'Dinamik App (Cubit + HTTP)',
       theme: ThemeData(primarySwatch: Colors.blue),
       home: RepositoryProvider(
-        create: (_) => DynamicRepository(baseUrl: baseUrl),
+        create: (_) => DynamicRepository(api: api),
         child: BlocProvider(
           create: (context) => DynamicCubit(repository: context.read<DynamicRepository>()),
           child: const HomePage(),

@@ -1,21 +1,13 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../models/dynamic_models.dart';
+import '../services/api_service.dart';
 
 class DynamicRepository {
-  final String baseUrl;
+  final ApiService api;
 
-  DynamicRepository({required this.baseUrl});
+  DynamicRepository({required this.api});
 
   Future<List<DynamicSection>> fetchSectionsForUser(int userId) async {
-    final uri = Uri.parse('$baseUrl/users/$userId');
-    final res = await http.get(uri);
-
-    if (res.statusCode != 200) {
-      throw Exception('Failed to fetch sections: ${res.statusCode}');
-    }
-
-    final body = jsonDecode(res.body) as Map<String, dynamic>;
+    final body = await api.getJson('/users/$userId');
     final sectionsJson = (body['sections'] as List<dynamic>? ?? []);
     return sectionsJson
         .map((s) => DynamicSection.fromJson(Map<String, dynamic>.from(s)))
@@ -23,10 +15,7 @@ class DynamicRepository {
   }
 
   Future<List<Map<String, dynamic>>> fetchLookup(String entity) async {
-    final uri = Uri.parse('$baseUrl/lookups/$entity');
-    final res = await http.get(uri);
-    if (res.statusCode != 200) return [];
-    final body = jsonDecode(res.body) as Map<String, dynamic>;
+    final body = await api.getJson('/lookups/$entity');
     return (body['items'] as List<dynamic>? ?? []).map((e) => Map<String, dynamic>.from(e)).toList();
   }
 }
